@@ -11,7 +11,8 @@ builder.Services.AddCors(options =>
         {
             builder.WithOrigins("http://localhost:4200")
                    .AllowAnyHeader()
-                   .AllowAnyMethod();
+                   .AllowAnyMethod()
+                   .AllowCredentials();
         });
 });
 
@@ -23,7 +24,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 app.UseAuthorization();
 app.MapControllers();

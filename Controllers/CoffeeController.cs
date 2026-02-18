@@ -15,21 +15,35 @@ public class CoffeeController : ControllerBase
     {
         try
         {
+            Console.WriteLine($"=== Order Received ===");
+            Console.WriteLine($"Base Coffee: {order.BaseCoffee}");
+            Console.WriteLine($"Add-ons: {string.Join(", ", order.AddOns)}");
+            
+            // Factory Pattern: Create base coffee
             ICoffee coffee = CoffeeFactory.CreateCoffee(order.BaseCoffee);
+            Console.WriteLine($"Created base: {coffee.GetDescription()} - ${coffee.GetCost()}");
 
+            // Decorator Pattern: Apply add-ons
             foreach (var addOn in order.AddOns)
             {
                 coffee = AddAddOn(coffee, addOn);
+                Console.WriteLine($"After adding {addOn}: {coffee.GetDescription()} - ${coffee.GetCost()}");
             }
 
-            return Ok(new CoffeeResponseDto
+            var response = new CoffeeResponseDto
             {
                 Description = coffee.GetDescription(),
                 Cost = coffee.GetCost()
-            });
+            };
+            
+            Console.WriteLine($"Final: {response.Description} - ${response.Cost}");
+            Console.WriteLine($"===================");
+
+            return Ok(response);
         }
         catch (ArgumentException ex)
         {
+            Console.WriteLine($"Error: {ex.Message}");
             return BadRequest(ex.Message);
         }
     }

@@ -6,6 +6,8 @@ public static class CoffeeFactory
 {
     public static ICoffee CreateCoffee(string type)
     {
+        Console.WriteLine($"Factory creating: {type}");
+        
         return type.ToLower() switch
         {
             "espresso" => new Espresso(),
